@@ -20,31 +20,7 @@ If HTTPS traffic is intercepted by the proxy, the root CA should be a self-signe
 
 There are 2 ways to handle this error.
 
-## Disable SSL verification
-
-Disable the certificate check across the CLI by setting the environment variable of `AZURE_CLI_DISABLE_CONNECTION_VERIFICATION` to any value. This is not safe, but good for a short period like you want to capture a trace for a specific command and promptly turn it off after done. This currently doesn't work with data-plane operations, like [azure-storage-python](https://github.com/Azure/azure-storage-python), because the library doesn't have a built-in way to disable SSL verification. 
-
-### CMD
-
-```batch
-set AZURE_CLI_DISABLE_CONNECTION_VERIFICATION=1
-```
-
-### PowerShell
-
-`set` doesn't work in PowerShell because PowerShell's `set` is an alias to `Set-Variable`, which only changes the script's variables. See [about_environment_variables](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_environment_variables?view=powershell-6).
-
-```powershell
-$Env:AZURE_CLI_DISABLE_CONNECTION_VERIFICATION=1
-```
-
-### Linux
-
-```bash
-export AZURE_CLI_DISABLE_CONNECTION_VERIFICATION=1
-```
-
-## Change the CA bundle
+## Add certificate to CA bundle
 
 This is recommended if you use CLI frequently behind a corporate proxy. 
 
@@ -109,3 +85,29 @@ A frequent ask is whether or not `HTTP_PROXY` or `HTTPS_PROXY` environment varia
 For other details, check out [Stefan's blog](https://blog.jhnr.ch/2018/05/16/working-with-azure-cli-behind-ssl-intercepting-proxy-server/).
 
 [requests library]: https://github.com/kennethreitz/requests
+
+## Disable SSL verification
+
+Disable the certificate check across the CLI by setting the environment variable of `AZURE_CLI_DISABLE_CONNECTION_VERIFICATION` to any value. This is not safe, but good for a short period like you want to capture a trace for a specific command and promptly turn it off after done. This currently doesn't work with data-plane operations, like [azure-storage-python](https://github.com/Azure/azure-storage-python), because the library doesn't have a built-in way to disable SSL verification. 
+
+> Currently this method doesn't work for some data-plane commands, because the SDKs Azure CLI depends on don't expose an env var to disable SSL verification. 
+
+### CMD
+
+```batch
+set AZURE_CLI_DISABLE_CONNECTION_VERIFICATION=1
+```
+
+### PowerShell
+
+`set` doesn't work in PowerShell because PowerShell's `set` is an alias to `Set-Variable`, which only changes the script's variables. See [about_environment_variables](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_environment_variables?view=powershell-6).
+
+```powershell
+$Env:AZURE_CLI_DISABLE_CONNECTION_VERIFICATION=1
+```
+
+### Linux
+
+```bash
+export AZURE_CLI_DISABLE_CONNECTION_VERIFICATION=1
+```
