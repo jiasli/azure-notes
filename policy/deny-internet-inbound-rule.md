@@ -41,3 +41,11 @@ az network nic update --network-security-group "" --ids /subscriptions/0b1f6471-
 ```
 
 Files: [nic-policy.json](nic-policy.json)
+
+### Trigger policy evaluation
+
+To manually trigger policy evaluation, use **Policy States - Trigger Subscription Evaluation** API: https://docs.microsoft.com/en-us/rest/api/policy-insights/policystates/triggersubscriptionevaluation
+
+```
+az rest --method post --uri https://management.azure.com/subscriptions/{subscriptionId}/providers/Microsoft.PolicyInsights/policyStates/latest/triggerEvaluation?api-version=2019-10-01
+```
