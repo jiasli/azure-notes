@@ -1,0 +1,17 @@
+{
+    "if": {
+        "allOf": [
+            {
+                "field": "type",
+                "equals": "Microsoft.Network/networkInterfaces"
+            },
+            {                
+                "field": "Microsoft.Network/networkInterfaces/networkSecurityGroup",
+                "exists": false
+            }
+        ]
+    },
+    "then": {
+        "effect": "deny"
+    }
+}
