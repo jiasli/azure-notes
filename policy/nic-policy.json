@@ -5,9 +5,19 @@
                 "field": "type",
                 "equals": "Microsoft.Network/networkInterfaces"
             },
-            {                
+            {
                 "field": "Microsoft.Network/networkInterfaces/networkSecurityGroup",
                 "exists": false
+            },
+            {
+                "count": {
+                    "field": "Microsoft.Network/networkInterfaces/ipConfigurations[*]",
+                    "where": {
+                        "field": "Microsoft.Network/networkInterfaces/ipConfigurations[*].publicIpAddress",
+                        "exists": true
+                    }
+                },
+                "greater": 0
             }
         ]
     },

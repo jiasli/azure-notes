@@ -28,11 +28,10 @@ az network nsg rule create -g {} --nsg-name {} --name allow-all --priority 100 -
 
 Files: [nsg-rule-policy.json](nsg-rule-policy.json)
 
-### Deny creating NIC without NSG property
+### Deny creating NIC with public IP but no NSG
 
 ```sh
 # Microsoft.Network/networkInterfaces
-# Deny creating NIC without NSG property
 az policy definition create --name deny-nic-no-nsg --mode All --rules @nic-policy.json
 az policy assignment create --name deny-nic-no-nsg-assignment --scope /subscriptions/0b1f6471-1bf0-4dda-aec3-cb9272f09590 --policy deny-nic-no-nsg
 
