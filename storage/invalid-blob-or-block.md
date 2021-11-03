@@ -17,14 +17,25 @@ This is usually caused by inconsistent block ID length. Per [Put Block](https://
 
 > For a given blob, all block IDs must be the same length. If a block is uploaded with a block ID of a different length than the block IDs for any existing uncommitted blocks, the service returns error response code 400 (Bad Request).
 
-The inconsistency can be caused by **previously failed upload using other tools which didn't finish correctly**. Azure Storage Explorer always uses base-64 encoded GUID as the `blockid`:
+The `blockid` mismatch is caused by **previous unfinished upload using other tools**.
 
-```
-block Id: MWIzYzY3YTItZmJiMy0wYjQ0LTVhZDEtOTJjNGRkMTcwZDk0
-base-64 decoded: 1b3c67a2-fbb3-0b44-5ad1-92c4dd170d94
-```
+- Azure Storage Explorer uses base-64 encoded GUID as the `blockid`:
 
-Thus the length of `blockid` is always the same. It is not possible to trigger this error solely by Azure Storage Explorer.
+   ```
+   block Id: MWIzYzY3YTItZmJiMy0wYjQ0LTVhZDEtOTJjNGRkMTcwZDk0
+   base-64 decoded: 1b3c67a2-fbb3-0b44-5ad1-92c4dd170d94
+   ```
+
+- Meanwhile, Azure Portal uses base-64 encoded string `block-xxxxxxxx` as the `blockid`:
+
+   ```
+   block Id: YmxvY2stMDAwMDAwMzE=
+   base-64 decoded: block-00000031
+   ```
+
+Within these tools, the length of `blockid` is the same, so it is not possible to trigger this error solely by one tool.
+
+**However, if a file is first updated by Azure Portal and the upload is canceled, the blob will contain uncommitted blocks. Now uploading the same file with Azure Storage Explorer will trigger the above error, due to the `blockid` length mismatch.** (This should be considered as an unfriendly behavior or design.)
 
 ## Reproduce
 
