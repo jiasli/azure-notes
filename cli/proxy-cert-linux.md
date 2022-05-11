@@ -6,7 +6,7 @@ Manually run below commands to find root CA certificates:
 
 ```sh
 # Get all intermediate certs
-openssl s_client -showcerts -servername login.microsoftonline.com -connect login.microsoftonline.com:443
+openssl s_client -showcerts -servername login.microsoftonline.com -connect login.microsoftonline.com:443 <<< "Q"
 
 # Save the last intermediate certificate to a temp file
 echo '-----BEGIN CERTIFICATE-----
@@ -41,6 +41,7 @@ w6D0yDdVSvG/5XlCNatBmO/8EznDu1vr72N8gJzISUZwa6CCUD7QBLbKJcXBBVVf
 
 # Get the issuer hash
 openssl x509 -in inter.pem -noout -issuer_hash
+# 3513523f
 
 # Print the root certificate
 cat /etc/ssl/certs/3513523f.0
